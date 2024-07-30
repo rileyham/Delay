@@ -65,7 +65,7 @@
           uiLastY_Normal="371" uiopen_Normal="1">
     <PLUGIN name="AUAudioFilePlayer" format="AudioUnit" category="Generator"
             manufacturer="Apple" version="1.6.0" file="AudioUnit:Generators/augn,afpl,appl"
-            uniqueId="6163676e" isInstrument="0" fileTime="0" infoUpdateTime="190b4512fa0"
+            uniqueId="6163676e" isInstrument="0" fileTime="0" infoUpdateTime="190c24016be"
             numInputs="0" numOutputs="2" isShell="0" hasARAExtension="0"
             uid="6163676e"/>
     <STATE>553.hAGaoMGcv.C1AHv.DTfAGfPBJr.Gc3wGgvUag4VclE1XzUmbkIGUjEFcg8EDarVPUAkbkMWYzAUYxMWZyQWYtQ2TzEFcksTY4c0b0IFc4AWYWYWYxMWZu4FUzkGbk8EDOXVZrUVKxUlYkIWYtMVYyQkag0VYRDFbvwFPgxvzM3vCPDQFXYTZrUlSg0VYWIUYmk1atMmWIM2TkwVYiQWYjYTZrU1WPryKUMWYxM2KnEVaxDyKDU1bqQ2av8hSkcGHJEVay8RXwUWXxkVcyABTx8lZkMFcuDVb0ElboU2btzFbyDpDTOAEUXwEXjgFdIUYmk1atQzakMGSu8FbZIUYmk1atQTXzE1WP.QRyMUYrU1XzUFYRU1Yo8laZIUYmk1at4TXsUFBOAAb...........Hdwj...F...................13FED...............................P................................................vmCcP...........f5ME......jfVNU1cfHUYmk1atkfDgYFbrAA.RDVcm4Vzf.gUFkFakARLXUkazkFcrUFY.f..Y.fI.rB.IAPT.jE.dA.b.TG.5Avd.zG.DBPi.TI.jBf3.PN.sC.+AbP.ZDPIAXR.YFflATZ.lFvpAzZ.xFPsAvK.......f.A.........fH..................P.EC</STATE>
@@ -77,13 +77,32 @@
     </LAYOUT>
   </FILTER>
   <FILTER uid="7" x="0.39125" y="0.6134615384615385" useARA="0" uiLastX_Normal="185"
-          uiLastY_Normal="418" uiopen_Normal="1">
+          uiLastY_Normal="418" uiopen_Normal="1" uiLastX_Generic="274"
+          uiLastY_Generic="448" uiopen_Generic="1" uiLastX_Programs="365"
+          uiLastY_Programs="225" uiopen_Programs="1">
     <PLUGIN name="Delay" format="VST3" category="Fx" manufacturer="yourcompany"
             version="1.0.0" file="/Users/ham21/Library/Audio/Plug-Ins/VST3/Delay.vst3"
-            uniqueId="f1a0d32e" isInstrument="0" fileTime="190a23c5fd4" infoUpdateTime="190b4512fa1"
+            uniqueId="f1a0d32e" isInstrument="0" fileTime="190a23c5fd4" infoUpdateTime="190c24016bf"
             numInputs="2" numOutputs="2" isShell="0" hasARAExtension="0"
             uid="acf4abd1"/>
     <STATE>191.VMjLgXK....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="L R"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="L R"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <FILTER uid="8" x="0.58875" y="0.7942307692307692" useARA="0" uiLastX_Normal="1781"
+          uiLastY_Normal="210" uiopen_Normal="1">
+    <PLUGIN name="Wave Observer" format="VST3" category="Fx|Analyzer" manufacturer="Press Play"
+            version="1.7.0" file="/Library/Audio/Plug-Ins/VST3/WaveObserver.vst3"
+            uniqueId="9c2eefb7" isInstrument="0" fileTime="18f9a844da8" infoUpdateTime="190c24016bf"
+            numInputs="2" numOutputs="2" isShell="0" hasARAExtension="0"
+            uid="764b1824"/>
+    <STATE>352.VMjLgbU....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9DSMx3RRjUCVtUDagQWUFElKXEVVzk0UYIGNFI1Z3TUX0EkUYUVTVMFdEYzXugCagszJ4EybYYSLykkMwnFYVg0azDCdqPENYgjMZgDYqIiatU0UYszJCQSZ1fjSoYCVNoVLwDlZUYkKq4jLXc1cVk0RqLzMt3hKt3hKt3RbNcjV0MlLWIWUwj0ZzXTVCUFbisVRxH1a3vVXNMDTtbjKlMmLEw1XqkULggGLwb0b3XTVqgSQYASRWgkdqESXzM2MOkUaYwVVrkEaZIjKt3hKtvyKIMzasA2atUlaz4COIUDYoQ2Pu4Fcx8FarUlb9.iK77RREQVZzMzatQmbuwFakImO77hUSQ0LPwVcmklaSQWXzUlO..</STATE>
     <LAYOUT>
       <INPUTS>
         <BUS index="0" layout="L R"/>
@@ -97,4 +116,6 @@
   <CONNECTION srcFilter="6" srcChannel="1" dstFilter="7" dstChannel="1"/>
   <CONNECTION srcFilter="7" srcChannel="0" dstFilter="3" dstChannel="0"/>
   <CONNECTION srcFilter="7" srcChannel="1" dstFilter="3" dstChannel="1"/>
+  <CONNECTION srcFilter="7" srcChannel="0" dstFilter="8" dstChannel="0"/>
+  <CONNECTION srcFilter="7" srcChannel="1" dstFilter="8" dstChannel="1"/>
 </FILTERGRAPH>
