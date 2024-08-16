@@ -92,6 +92,18 @@ void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     params.prepareToPlay(sampleRate);
     params.reset();
+    
+    juce::dsp::ProcessSpec spec;
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = juce::uint32(samplesPerBlock);
+    spec.numChannels = 2;
+    
+    delayLine.prepare(spec);
+    
+    double numSamples = Parameters::MAX_DELAY_TIME / 1000.0 * sampleRate;
+    int maxDelayInSamples = int(std::ceil(numSamples));
+    delayLine.setMaximumDelayInSamples(maxDelayInSamples);
+    delayLine.reset();
 }
 
 void DelayAudioProcessor::releaseResources()
@@ -131,14 +143,42 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
     
     params.update();
     
+    // set current delay length
+    float sampleRate = float(getSampleRate());
+
+    
+
     float* channelDataL = buffer.getWritePointer(0);
     float* channelDataR = buffer.getWritePointer(1);
     
     for (int sample = 0; sample < buffer.getNumSamples(); ++ sample) {
+        
         params.smoothen();
         
-        channelDataL[sample] *= params.gain;
-        channelDataR[sample] *= params.gain;
+        // update delay time
+        float delayInSamples = params.delayTime / 1000.0f * sampleRate;
+        delayLine.setDelay(delayInSamples);
+        
+        // read incoming audio samples into new variables
+        float dryL = channelDataL[sample];
+        float dryR = channelDataR[sample];
+        
+        // write these samples to the delayLine
+        delayLine.pushSample(0, dryL);
+        delayLine.pushSample(1, dryR);
+        
+        // read the delayed audio
+        float wetL = delayLine.popSample(0);
+        float wetR = delayLine.popSample(1);
+        
+        // write the wet samples back to AudioBuffer multiplied by the current gain
+        float mixL = dryL + (wetL * params.mix);
+        float mixR = dryR + (wetR * params.mix);
+        
+        channelDataL[sample] = mixL * params.gain;
+        channelDataR[sample] = mixR * params.gain;
+        
+        
     }
 }
 

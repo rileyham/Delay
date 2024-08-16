@@ -11,7 +11,9 @@
 #pragma once
 #include <JuceHeader.h>
 
-const juce::ParameterID gainParamID { "gain", 1};
+const juce::ParameterID gainParamID {"gain", 1};
+const juce::ParameterID delayTimeParamID {"delayTime", 1};
+const juce::ParameterID mixParamID {"mix", 1};
 
 class Parameters
 {
@@ -24,10 +26,24 @@ public:
     void reset() noexcept;
     void smoothen() noexcept;
     
+    // plugin parameter values
     float gain = 0.0f;
+    float delayTime = 0.0f;
+    float mix = 1.0f;
     
+    float targetDelayTime = 0.0f;
+    float coeff = 0.0f; // one-pole smoothing
+    
+    static constexpr float MIN_DELAY_TIME = 5.0f;
+    static constexpr float MAX_DELAY_TIME = 5000.0f;
     
 private:
+    // parameter objects
     juce::AudioParameterFloat* gainParam;
     juce::LinearSmoothedValue<float> gainSmoother;
+    
+    juce::AudioParameterFloat* delayTimeParam;
+    
+    juce::AudioParameterFloat* mixParam;
+    juce::LinearSmoothedValue<float> mixSmoother;
 };

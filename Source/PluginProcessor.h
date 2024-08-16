@@ -53,6 +53,7 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
 
 private:
     //==============================================================================
@@ -63,4 +64,5 @@ private:
 
     };
     Parameters params;
+    juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
 };
