@@ -38,6 +38,8 @@ public:
     static constexpr float MAX_DELAY_TIME = 5000.0f;
     
 private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Parameters)
+    
     // parameter objects
     juce::AudioParameterFloat* gainParam;
     juce::LinearSmoothedValue<float> gainSmoother;

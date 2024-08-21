@@ -32,6 +32,17 @@ static juce::String stringFromMilliseconds(float value, int)
     }
 }
 
+static float millisecondsFromString(const juce::String& text)
+{
+    float value = text.getFloatValue();
+    if(!text.endsWithIgnoreCase("ms")) {
+        if(text.endsWithIgnoreCase("s") || value < Parameters::MIN_DELAY_TIME) {
+            return value * 1000.0f;
+        }
+    }
+    return value;
+}
+
 static juce::String stringFromDecibels(float value, int)
 {
     return juce::String(value, 1) + " db";
@@ -63,11 +74,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterL
                                                            ));
     layout.add(std::make_unique<juce::AudioParameterFloat>(delayTimeParamID,
                                                            "Delay Time",
-                                                           // 0.001f is the step size, 0.25 is the skew factor (the smaller the number, the more emphasis low values recieve
+                                                           // 0.001f is the step size, 0.3 is the skew factor (the smaller the number, the more emphasis low values recieve
                                                            juce::NormalisableRange<float> {MIN_DELAY_TIME, MAX_DELAY_TIME, 0.001f, 0.3f},
                                                            100.0f,
                                                            juce::AudioParameterFloatAttributes()
                                                                     .withStringFromValueFunction(stringFromMilliseconds)
+                                                                    .withValueFromStringFunction(millisecondsFromString)
                                                            ));
     layout.add(std::make_unique<juce::AudioParameterFloat>(mixParamID,
                                                            "Mix",
