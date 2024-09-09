@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "ProtectYourEars.h"
 
 //==============================================================================
 DelayAudioProcessor::DelayAudioProcessor() :
@@ -104,6 +105,10 @@ void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     int maxDelayInSamples = int(std::ceil(numSamples));
     delayLine.setMaximumDelayInSamples(maxDelayInSamples);
     delayLine.reset();
+    
+    // clear out feedback
+    feedbackL = 0.0f;
+    feedbackR = 0.0f;
 }
 
 void DelayAudioProcessor::releaseResources()
@@ -164,12 +169,16 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         float dryR = channelDataR[sample];
         
         // write these samples to the delayLine
-        delayLine.pushSample(0, dryL);
-        delayLine.pushSample(1, dryR);
+        delayLine.pushSample(0, dryL + feedbackL);
+        delayLine.pushSample(1, dryR + feedbackR);
         
         // read the delayed audio
         float wetL = delayLine.popSample(0);
         float wetR = delayLine.popSample(1);
+        
+        // write the feedback line
+        feedbackL = wetL * params.feedback;
+        feedbackR = wetR * params.feedback;
         
         // write the wet samples back to AudioBuffer multiplied by the current gain
         float mixL = dryL + (wetL * params.mix);
@@ -180,6 +189,11 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         
         
     }
+    
+    // ear protection
+    #if JUCE_DEBUG
+        protectYourEars(buffer);
+    #endif
 }
 
 //==============================================================================

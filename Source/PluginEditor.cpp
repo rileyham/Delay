@@ -25,6 +25,7 @@ DelayAudioProcessorEditor::DelayAudioProcessorEditor (DelayAudioProcessor& p)
     // Feedback group
     feedbackGroup.setText("Feedback");
     feedbackGroup.setTextLabelPosition(juce::Justification::horizontallyCentred);
+    feedbackGroup.addAndMakeVisible(feedbackKnob);
     addAndMakeVisible(feedbackGroup);
     
     // Output group
@@ -80,4 +81,5 @@ void DelayAudioProcessorEditor::resized()
     delayTimeKnob.setTopLeftPosition(20, 20);
     mixKnob.setTopLeftPosition(20, 20);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
+    feedbackKnob.setTopLeftPosition(20, 20);
 }

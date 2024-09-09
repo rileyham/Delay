@@ -24,6 +24,8 @@
     </GROUP>
     <FILE id="gvgKwP" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/LookAndFeel.cpp"/>
     <FILE id="DAqZuS" name="LookAndFeel.h" compile="0" resource="0" file="Source/LookAndFeel.h"/>
+    <FILE id="LfPowW" name="ProtectYourEars.h" compile="0" resource="0"
+          file="Source/ProtectYourEars.h"/>
   </MAINGROUP>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
