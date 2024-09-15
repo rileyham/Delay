@@ -19,7 +19,9 @@ DelayAudioProcessor::DelayAudioProcessor() :
     ),
     params(apvts) // initializes the parameters object
 {
-
+    // configure the SVT filters
+    lowCutFilter.setType(juce::dsp::StateVariableTPTFilterType::highpass);
+    highCutFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
 }
 
 DelayAudioProcessor::~DelayAudioProcessor()
@@ -99,7 +101,16 @@ void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     spec.maximumBlockSize = juce::uint32(samplesPerBlock);
     spec.numChannels = 2;
     
+    // prepare dsp objects
     delayLine.prepare(spec);
+    lowCutFilter.prepare(spec);
+    highCutFilter.prepare(spec);
+    
+    lowCutFilter.reset();
+    highCutFilter.reset();
+    
+    lastLowCut = -1.0f;
+    lastHighCut = -1.0f;
     
     double numSamples = Parameters::MAX_DELAY_TIME / 1000.0 * sampleRate;
     int maxDelayInSamples = int(std::ceil(numSamples));
@@ -182,6 +193,16 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         float delayInSamples = params.delayTime / 1000.0f * sampleRate;
         delayLine.setDelay(delayInSamples);
         
+        // update filter cutoff
+        if (params.lowCut != lastLowCut) {
+            lowCutFilter.setCutoffFrequency(params.lowCut);
+            lastLowCut = params.lowCut;
+        }
+        if (params.highCut != lastHighCut) {
+            highCutFilter.setCutoffFrequency(params.highCut);
+            lastHighCut = params.highCut;
+        }
+        
         // read incoming audio samples into new variables
         float dryL = inputDataL[sample];
         float dryR = inputDataR[sample];
@@ -199,7 +220,12 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         
         // write the feedback line
         feedbackL = wetL * params.feedback;
+        feedbackL = lowCutFilter.processSample(0, feedbackL);
+        feedbackL = highCutFilter.processSample(0, feedbackL);
+        
         feedbackR = wetR * params.feedback;
+        feedbackR = lowCutFilter.processSample(1, feedbackR);
+        feedbackR = highCutFilter.processSample(1, feedbackR);
         
         // write the wet samples back to AudioBuffer multiplied by the current gain
         float mixL = dryL + (wetL * params.mix);

@@ -64,7 +64,13 @@ private:
     
     Parameters params;
     juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
+    juce::dsp::StateVariableTPTFilter<float> lowCutFilter;
+    juce::dsp::StateVariableTPTFilter<float> highCutFilter;
     
     float feedbackL = 0.0f;
     float feedbackR = 0.0f;
+    
+    // -1.0 = special value declaring: "No frequency set yet"
+    float lastLowCut = -1.0f;
+    float lastHighCut = -1.0f;
 };
