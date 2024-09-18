@@ -17,7 +17,8 @@
 //==============================================================================
 /**
 */
-class DelayAudioProcessorEditor  : public juce::AudioProcessorEditor
+class DelayAudioProcessorEditor  : public juce::AudioProcessorEditor,
+                                   private juce::AudioProcessorParameter::Listener
 {
 public:
     DelayAudioProcessorEditor (DelayAudioProcessor&);
@@ -28,7 +29,11 @@ public:
     void resized() override;
 
 private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayAudioProcessorEditor)
+    
+    void parameterValueChanged(int, float) override;
+    void parameterGestureChanged(int, bool) override { }
+    void updateDelayKnobs(bool tempoSyncActive);
+    
     MainLookAndFeel mainLF;
     
     // This reference is provided as a quick way for your editor to
@@ -42,7 +47,16 @@ private:
     RotaryKnob stereoKnob {"Stereo", audioProcessor.apvts, stereoParamID, true};
     RotaryKnob lowCutKnob {"Low Cut", audioProcessor.apvts, lowCutParamID};
     RotaryKnob highCutKnob {"High Cut", audioProcessor.apvts, highCutParamID};
+    RotaryKnob delayNoteKnob {"Note", audioProcessor.apvts, delayNoteParamID};
+    
+    juce::TextButton tempoSyncButton;
+    juce::AudioProcessorValueTreeState::ButtonAttachment
+    tempoSyncAttatchment {
+        audioProcessor.apvts, tempoSyncParamID.getParamID(),
+    tempoSyncButton
+    };
     
     juce::GroupComponent delayGroup, feedbackGroup, outputGroup;
-
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayAudioProcessorEditor)
 };
