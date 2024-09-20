@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "Parameters.h"
 #include "Tempo.h"
+#include "DelayLine.h"
 
 //==============================================================================
 /**
@@ -64,7 +65,7 @@ private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayAudioProcessor)
     
-    juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
+    DelayLine delayLineL, delayLineR;
     juce::dsp::StateVariableTPTFilter<float> lowCutFilter;
     juce::dsp::StateVariableTPTFilter<float> highCutFilter;
     

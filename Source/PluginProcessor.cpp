@@ -93,6 +93,9 @@ void DelayAudioProcessor::changeProgramName (int index, const juce::String& newN
 //==============================================================================
 void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    double numSamples = Parameters::MAX_DELAY_TIME / 1000.0 * sampleRate;
+    int maxDelayInSamples = int(std::ceil(numSamples));
+    
     params.prepareToPlay(sampleRate);
     params.reset();
     
@@ -101,8 +104,12 @@ void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     spec.maximumBlockSize = juce::uint32(samplesPerBlock);
     spec.numChannels = 2;
     
-    // prepare dsp objects
-    delayLine.prepare(spec);
+    // prepare filter and delay
+    delayLineL.setMaximumDelayInSamples(maxDelayInSamples);
+    delayLineR.setMaximumDelayInSamples(maxDelayInSamples);
+    delayLineL.reset();
+    delayLineR.reset();
+    
     lowCutFilter.prepare(spec);
     highCutFilter.prepare(spec);
     
@@ -111,11 +118,6 @@ void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     
     lastLowCut = -1.0f;
     lastHighCut = -1.0f;
-    
-    double numSamples = Parameters::MAX_DELAY_TIME / 1000.0 * sampleRate;
-    int maxDelayInSamples = int(std::ceil(numSamples));
-    delayLine.setMaximumDelayInSamples(maxDelayInSamples);
-    delayLine.reset();
     
     // clear out feedback
     feedbackL = 0.0f;
@@ -200,7 +202,6 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         // update delay time
         float delayTime = params.tempoSync ? syncedTime : params.delayTime;
         float delayInSamples = delayTime / 1000.0f * sampleRate;
-        delayLine.setDelay(delayInSamples);
         
         // update filter cutoff
         if (params.lowCut != lastLowCut) {
@@ -220,12 +221,12 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         float mono = (dryL + dryR) * 0.5f;
         
         // write these samples to the delayLine
-        delayLine.pushSample(0, mono*params.panL + feedbackR);
-        delayLine.pushSample(1, mono*params.panR + feedbackL);
+        delayLineL.write(mono * params.panL + feedbackR);
+        delayLineR.write(mono * params.panR + feedbackL);
         
         // read the delayed audio
-        float wetL = delayLine.popSample(0);
-        float wetR = delayLine.popSample(1);
+        float wetL = delayLineL.read(delayInSamples);
+        float wetR = delayLineR.read(delayInSamples);
         
         // write the feedback line
         feedbackL = wetL * params.feedback;
