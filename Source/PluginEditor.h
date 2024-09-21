@@ -13,6 +13,7 @@
 #include "Parameters.h"
 #include "RotaryKnob.h"
 #include "LookAndFeel.h"
+#include "LevelMeter.h"
 
 //==============================================================================
 /**
@@ -35,6 +36,7 @@ private:
     void updateDelayKnobs(bool tempoSyncActive);
     
     MainLookAndFeel mainLF;
+    LevelMeter meter;
     
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

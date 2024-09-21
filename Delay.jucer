@@ -10,6 +10,9 @@
       <FILE id="kjFxrF" name="Lato-Medium.ttf" compile="0" resource="1" file="../../pdfs/getting-started-book-main/Resources/Lato-Medium.ttf"/>
     </GROUP>
     <GROUP id="{8370AFA8-E035-9E44-18C1-D47CFAF19026}" name="Source">
+      <FILE id="CurAun" name="Measurement.h" compile="0" resource="0" file="Source/Measurement.h"/>
+      <FILE id="Jk6BEW" name="LevelMeter.cpp" compile="1" resource="0" file="Source/LevelMeter.cpp"/>
+      <FILE id="PKvJ7U" name="LevelMeter.h" compile="0" resource="0" file="Source/LevelMeter.h"/>
       <FILE id="QHjWsa" name="DelayLine.cpp" compile="1" resource="0" file="Source/DelayLine.cpp"/>
       <FILE id="CqDOow" name="DelayLine.h" compile="0" resource="0" file="Source/DelayLine.h"/>
       <FILE id="sm3WhE" name="Tempo.cpp" compile="1" resource="0" file="Source/Tempo.cpp"/>

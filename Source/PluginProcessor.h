@@ -12,6 +12,7 @@
 #include "Parameters.h"
 #include "Tempo.h"
 #include "DelayLine.h"
+#include "Measurement.h"
 
 //==============================================================================
 /**
@@ -61,6 +62,10 @@ public:
     };
     
     Parameters params;
+    
+    // atomic level meter variables
+    Measurement levelL, levelR;
+    
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayAudioProcessor)

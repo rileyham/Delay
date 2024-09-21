@@ -123,6 +123,10 @@ void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     feedbackL = 0.0f;
     feedbackR = 0.0f;
     
+    // set level to 0
+    levelL.reset();
+    levelR.reset();
+    
     tempo.reset();
 }
 
@@ -181,8 +185,6 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
     // set current delay length
     float sampleRate = float(getSampleRate());
 
-    
-
     auto mainInput = getBusBuffer(buffer, true, 0);
     auto mainInputChannels = mainInput.getNumChannels();
     auto isMainInputStereo = mainInputChannels > 1;
@@ -194,6 +196,9 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
     auto isMainOutputStereo = mainOutputChannels > 1;
     float* outputDataL = mainOutput.getWritePointer(0);
     float* outputDataR = mainOutput.getWritePointer(isMainOutputStereo ? 1 : 0);
+    
+    float maxL = 0.0f;
+    float maxR = 0.0f;;
     
     for (int sample = 0; sample < buffer.getNumSamples(); ++ sample) {
         
@@ -241,11 +246,19 @@ void DelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, [[mayb
         float mixL = dryL + (wetL * params.mix);
         float mixR = dryR + (wetR * params.mix);
         
-        outputDataL[sample] = mixL * params.gain;
-        outputDataR[sample] = mixR * params.gain;
+        float outL = mixL * params.gain;
+        float outR = mixR * params.gain;
         
+        outputDataL[sample] = outL;
+        outputDataR[sample] = outR;
         
+        maxL = std::max(maxL, std::abs(outL));
+        maxR = std::max(maxR, std::abs(outR));
     }
+    
+    // store level in the atomic variables
+    levelL.updateIfGreater(maxL);
+    levelR.updateIfGreater(maxR);
     
     // ear protection
     #if JUCE_DEBUG
